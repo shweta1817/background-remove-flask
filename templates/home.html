@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remove Background</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts (Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <script>
+    function showLoading() {
+      document.getElementById("loadingSpinner").classList.remove("hidden");
+    }
+  </script>
+
+  <style>
+    /* Applying Poppins font to body */
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-black font-sans text-white min-h-screen flex flex-col justify-between">
+
+  <!-- Navbar -->
+  <header class="bg-purple-600 w-full text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl sm:text-2xl font-semibold">RemoveBG Tool</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#upload" class="hover:text-purple-200">Upload</a></li>
+          <li><a href="#about" class="hover:text-purple-200">About</a></li>
+          <li><a href="#footer" class="hover:text-purple-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="about" class="w-full text-center bg-purple-300/20 py-16 px-4">
+    <h2 class="text-3xl sm:text-4xl font-semibold mb-4">Effortless Background Removal</h2>
+    <p class="text-lg max-w-2xl mx-auto px-4">
+      Upload your image and let our smart tool remove the background in seconds. Simple, fast, and hassle-free!
+    </p>
+  </section>
+
+  <!-- Upload Form -->
+  <section id="upload" class="flex flex-col items-center w-full py-10 px-4">
+    <div class="w-full max-w-3xl bg-purple-600 text-center text-white py-4 rounded-t-2xl shadow-md">
+      <h2 class="text-2xl sm:text-3xl font-semibold">Upload Your Image</h2>
+    </div>
+
+    <form action="/remback" method="POST" enctype="multipart/form-data"
+      class="w-full max-w-3xl bg-purple-300/40 p-6 rounded-b-2xl shadow-md space-y-6"
+      onsubmit="showLoading()">
+      
+      <div class="flex flex-col items-center space-y-4">
+        <input type="file" id="file" name="file" required
+          class="block w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-500 hover:file:bg-purple-600" />
+        <button type="submit"
+          class="bg-green-500 hover:bg-green-600 transition duration-300 px-6 py-2 rounded-md text-white font-semibold">
+          Remove Background
+        </button>
+      </div>
+
+      <!-- Spinner -->
+      <div id="loadingSpinner" class="hidden mt-6 flex justify-center items-center">
+        <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-purple-500 border-solid"></div>
+        <p class="ml-4 text-lg font-medium">Removing background...</p>
+      </div>
+    </form>
+  </section>
+
+  <!-- Result Display -->
+  {% if rembg_img_name %}
+  <section class="w-full max-w-6xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8 px-4">
+    <!-- Original Image -->
+    <div class="bg-purple-600/80 p-6 rounded-2xl text-center">
+      <h3 class="text-xl font-semibold mb-4">Original Image</h3>
+      <img src="../static/uploads/{{ org_img_name }}" alt="Original Image"
+        class="mx-auto max-w-full max-h-[400px] rounded-md shadow-md" />
+    </div>
+
+    <!-- Processed Image with Download -->
+    <div class="bg-purple-600/80 p-6 rounded-2xl text-center">
+      <h3 class="text-xl font-semibold mb-4">Background Removed</h3>
+      <img src="../static/uploads/{{ rembg_img_name }}" alt="Removed Background Image"
+        class="mx-auto max-w-full max-h-[400px] rounded-md shadow-md mb-4" />
+      <a href="../static/uploads/{{ rembg_img_name }}" download
+        class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-md transition">
+        Download Image
+      </a>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Footer -->
+  <footer id="footer" class="bg-purple-600 text-center py-6 mt-16 text-white">
+    <p>&copy; 2025 RemoveBG Tool. All rights reserved. | Made by Shweta Bandawane</p>
+  </footer>
+
+</body>
+
+</html>
